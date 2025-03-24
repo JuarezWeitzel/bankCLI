@@ -93,6 +93,25 @@ function buildAccount() {
     });
 }
 
+function deposit() {
+  inquirer.default
+    .prompt([
+      {
+        name: "accountName",
+        message: "Qual conta você deseja depositar:",
+      },
+    ])
+    .then((answer) => {
+      const accountName = answer["accountName"];
+
+      console.log(accountName)
+
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 function getAccountBalance() {
   inquirer.default
     .prompt([
@@ -110,7 +129,11 @@ function getAccountBalance() {
 
       const accountBalance = getAccount(accountName);
 
-      console.log(chalk.bgBlue(`O saldo da sua conta é: R$${accountBalance.balance.toFixed(2)}`));
+      console.log(
+        chalk.bgBlue(
+          `O saldo da sua conta é: R$${accountBalance.balance.toFixed(2)}`
+        )
+      );
       operation();
     })
     .catch((err) => {

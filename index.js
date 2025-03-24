@@ -46,8 +46,7 @@ function operation() {
 }
 
 function createAccount() {
-  console.log(chalk.bgGreen.black("Obrigado por escolher nosso Banco!"));
-  console.log(chalk.green("Parabéns, sua conta foi criada!"));
+  console.log(chalk.bgBlue.black("Obrigado por escolher nosso Banco!"));
   buildAccount();
 }
 
@@ -85,7 +84,31 @@ function buildAccount() {
         console.log(
           chalk.green("Parabéns, sua conta foi criada! Conta: " + accountName)
         );
-        operation();
+
+        inquirer.default
+          .prompt([
+            {
+              name: "response",
+              message: "Deseja efetuar algum depósito?",
+            },
+          ])
+          .then((answer) => {
+
+            const response = answer["response"];
+
+            if (
+              response === "Sim" ||
+              response === "SIM" ||
+              response === "sim"
+            ) {
+              return deposit();
+            } else {
+              operation();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     })
     .catch((err) => {
@@ -147,7 +170,13 @@ function deposit() {
 
             addAmount(accountName, amount);
 
-            console.log(chalk.bgGreen.black(`Depósito realizado com sucesso! Valor depositado: R$ ${amount.toFixed(2)}`))
+            console.log(
+              chalk.bgGreen.black(
+                `Depósito realizado com sucesso! Valor depositado: R$ ${amount.toFixed(
+                  2
+                )}`
+              )
+            );
             operation();
           });
       }
@@ -160,14 +189,15 @@ function deposit() {
 function addAmount(accountName, amount) {
   const accountData = getAccount(accountName);
 
-  accountData.balance = parseFloat(accountData.balance) + parseFloat(amount)
+  accountData.balance = parseFloat(accountData.balance) + parseFloat(amount);
 
-  fs.writeFileSync(`accounts/${accountName}.json`,
+  fs.writeFileSync(
+    `accounts/${accountName}.json`,
     JSON.stringify(accountData),
-    function(err) {
+    function (err) {
       console.log(err);
     }
-  )
+  );
 }
 
 function getAccountBalance() {

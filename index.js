@@ -93,7 +93,6 @@ function buildAccount() {
             },
           ])
           .then((answer) => {
-
             const response = answer["response"];
 
             if (
@@ -143,9 +142,7 @@ function deposit() {
           .then((answer) => {
             const response = answer["response"];
 
-            if (
-              response.toLowerCase() === "sim"
-            ) {
+            if (response.toLowerCase() === "sim") {
               return buildAccount(accountName);
             } else {
               operation();
@@ -196,6 +193,24 @@ function addAmount(accountName, amount) {
       console.log(err);
     }
   );
+}
+
+function withdraw() {
+  inquirer.default
+    .prompt([
+      {
+        name: "accountName",
+        message: "Qual nome da conta que deseja sacar: ",
+      },
+    ])
+    .then((answer) => {
+      const accountName = answer["accountName"];
+
+      console.log(accountName)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 function getAccountBalance() {

@@ -89,20 +89,16 @@ function buildAccount() {
           .prompt([
             {
               name: "response",
-              message: "Deseja efetuar algum depósito?",
+              message: "Deseja efetuar algum depósito? (S/N)",
             },
           ])
           .then((answer) => {
             const response = answer["response"];
 
-            if (
-              response === "Sim" ||
-              response === "SIM" ||
-              response === "sim"
-            ) {
-              return deposit();
+            if (response.toLowerCase() === "s") {
+              return withdraw();
             } else {
-              operation();
+              return operation();
             }
           })
           .catch((err) => {
@@ -136,13 +132,13 @@ function deposit() {
           .prompt([
             {
               name: "response",
-              message: "Deseja criar uma conta?",
+              message: "Deseja criar uma conta? (S/N)",
             },
           ])
           .then((answer) => {
             const response = answer["response"];
 
-            if (response.toLowerCase() === "sim") {
+            if (response.toLowerCase() === "s") {
               return buildAccount(accountName);
             } else {
               return operation();
@@ -253,12 +249,12 @@ function withdraw() {
               .prompt([
                 {
                   name: "response",
-                  message: "Deseja fazer outro saque?",
+                  message: "Deseja fazer outro saque? (S/N)",
                 },
               ])
               .then((answer) => {
                 const response = answer["response"];
-                if (response.toLowerCase() === "sim") {
+                if (response.toLowerCase() === "s") {
                   return withdraw();
                 } else {
                   return operation();

@@ -23,3 +23,21 @@ O **BankCLI** é uma aplicação desenvolvida como um exercício de demonstraç�
    ```bash
    git clone https://github.com/seu-usuario/bank-cli.git
    cd bank-cli
+2. Instale os módulos: 
+   ```bash
+   npm i inquirer chalk@4.1.2
+
+## Inicialização
+
+Após realizar a instalação conforme descrito na seção anterior, siga os passos abaixo para inicializar o `bank-cli`. Você pode usar o **Prompt de Comando (CMD)** no Windows ou o **terminal integrado do Visual Studio Code (VS Code)**. As instruções funcionam em ambos.
+
+### Passos para inicializar
+
+1. **Certifique-se de estar no diretório correto**:
+   - Após clonar o repositório e instalar os módulos, você já deve estar dentro da pasta `bank-cli`. Para confirmar, execute:
+     ```bash
+     node index.js
+    
+   - Outra opção:
+     ```bash
+     npm start

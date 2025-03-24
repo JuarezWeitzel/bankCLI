@@ -145,35 +145,43 @@ function deposit() {
             if (response.toLowerCase() === "sim") {
               return buildAccount(accountName);
             } else {
-              operation();
+              return operation();
             }
           });
       } else {
-        inquirer.default
-          .prompt([
-            {
-              name: "amount",
-              message: "Informe o valor do deposito:",
-            },
-          ])
-          .then((answer) => {
-            const amount = parseFloat(answer["amount"]);
+        function askAmount() {
+          inquirer.default
+            .prompt([
+              {
+                name: "amount",
+                message: "Informe o valor do depósito:",
+              },
+            ])
+            .then((answer) => {
+              const amount = parseFloat(answer["amount"]);
 
-            while (amount <= 0 || amount === "") {
-              console.log(chalk.bgRed.black("Valor inválido!"));
-            }
+              if (amount <= 0 || isNaN(amount) || answer["amount"] === "") {
+                console.log(chalk.bgRed.black("Valor inválido!"));
+                return askAmount();
+              }
 
-            addAmount(accountName, amount);
+              addAmount(accountName, amount);
 
-            console.log(
-              chalk.bgGreen.black(
-                `Depósito realizado com sucesso! Valor depositado: R$ ${amount.toFixed(
-                  2
-                )}`
-              )
-            );
-            operation();
-          });
+              console.log(
+                chalk.bgGreen.black(
+                  `Depósito realizado com sucesso! Valor depositado: R$ ${amount.toFixed(
+                    2
+                  )}`
+                )
+              );
+              operation();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+
+        askAmount();
       }
     })
     .catch((err) => {
@@ -206,11 +214,81 @@ function withdraw() {
     .then((answer) => {
       const accountName = answer["accountName"];
 
-      console.log(accountName)
+      if (accountName === "" || !isNaN(Number(accountName))) {
+        console.log(chalk.bgRed.black("Nome da conta inválido!"));
+        return withdraw();
+      }
+
+      if (!checkAccountNotExist(accountName)) {
+        return withdraw();
+      }
+
+      function askAmount() {
+        inquirer.default
+          .prompt([
+            {
+              name: "amount",
+              message: "Qual valor deseja sacar: ",
+            },
+          ])
+          .then((answer) => {
+            const amount = parseFloat(answer["amount"]);
+
+            if (amount <= 0 || isNaN(amount) || answer["amount"] === "") {
+              console.log(chalk.bgRed.black("Valor inválido!"));
+              return askAmount();
+            }
+
+            removeAmount(accountName, amount);
+
+            console.log(
+              chalk.bgGreen.black(
+                `Saque feito com sucesso! O valor do saque foi de R$ ${amount.toFixed(
+                  2
+                )}.`
+              )
+            );
+
+            inquirer.default
+              .prompt([
+                {
+                  name: "response",
+                  message: "Deseja fazer outro saque?",
+                },
+              ])
+              .then((answer) => {
+                const response = answer["response"];
+                if (response.toLowerCase() === "sim") {
+                  return withdraw();
+                } else {
+                  return operation();
+                }
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
+      askAmount();
     })
     .catch((err) => {
       console.log(err);
     });
+}
+
+function removeAmount(accountName, amount) {
+  const accountData = getAccount(accountName);
+
+  accountData.balance = parseFloat(accountData.balance) - parseFloat(amount);
+
+  fs.writeFileSync(
+    `accounts/${accountName}.json`,
+    JSON.stringify(accountData),
+    function (err) {
+      console.log(err);
+    }
+  );
 }
 
 function getAccountBalance() {

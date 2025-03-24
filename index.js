@@ -37,10 +37,14 @@ function operation() {
             } else if (action === "Sacar") {
                 withdraw();
             } else if (action === "Sair") {
-                exit();
+                leaveBank();
             }
 
         }).catch((err) => {
             console.log(err);
         })
+}
+
+function leaveBank() {
+    console.log(chalk.bgBlue.black("Obrigado por usar o BankCLI!"));
 }

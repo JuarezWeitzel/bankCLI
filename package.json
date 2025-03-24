@@ -17,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/JuarezWeitzel/bankCLI/issues"
   },
-  "homepage": "https://github.com/JuarezWeitzel/bankCLI#readme"
+  "homepage": "https://github.com/JuarezWeitzel/bankCLI#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "inquirer": "^12.5.0"
+  }
 }

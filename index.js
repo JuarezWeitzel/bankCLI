@@ -44,6 +44,12 @@ function operation() {
         })
 }
 
+function createAccount() {
+    console.log(chalk.bgGreen.black("Obrigado por escolher nosso Banco!"));
+    console.log(chalk.green("Parabéns, sua conta foi criada!"));
+    operation();
+}
+
 function leaveBank() {
     console.log(chalk.bgBlue.black("Obrigado por usar o BankCLI!"));
 }

@@ -5,6 +5,7 @@ const chalk = require("chalk");
 // importando modulos internos
 const fs = require("fs");
 const { exit } = require("process");
+const { parse } = require("path");
 
 operation();
 
@@ -91,6 +92,46 @@ function buildAccount() {
       console.log(err);
     });
 }
+
+function getAccountBalance() {
+  inquirer.default
+    .prompt([
+      {
+        name: "accountName",
+        message: "Qual nome da conta que deseja consultar:",
+      },
+    ])
+    .then((answer) => {
+      const accountName = answer["accountName"];
+
+      if(!checkAccountNotExist(accountName)) {
+        return getAccountBalance();
+      }
+
+      const accountJSON = fs.readFileSync(`accounts/${accountName}.json`, {
+        encoding: "utf8",
+        flag: "r"
+      })
+
+      const accountData = JSON.parse(accountJSON)
+      const accountBalance = accountData.balance.toFixed(2)
+
+      console.log(chalk.bgBlue(`O saldo da sua conta é: R$${accountBalance}`))
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function checkAccountNotExist(accountName) {
+  if (!fs.existsSync(`accounts/${accountName}.json`)) {
+    console.log(chalk.bgRed.black("Essa conta não existe!"));
+    return false;
+  }
+
+  return true;
+}
+
 function checkAccountExist(accountName) {
   if (fs.existsSync(`accounts/${accountName}.json`)) {
     console.log(chalk.bgRed.black("Esta conta já existe, escolha outro nome!"));

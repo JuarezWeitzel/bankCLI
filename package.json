@@ -1,0 +1,21 @@
+{
+  "name": "bankcli",
+  "version": "1.0.0",
+  "description": "Um projeto simples de linha de comando para demonstrar operações bancárias básicas em Node.js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuarezWeitzel/bankCLI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JuarezWeitzel/bankCLI/issues"
+  },
+  "homepage": "https://github.com/JuarezWeitzel/bankCLI#readme"
+}

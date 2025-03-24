@@ -55,7 +55,7 @@ function buildAccount() {
     .prompt([
       {
         name: "accountName",
-        message: "Qual nome deseja dar para sua conta?",
+        message: "Qual nome deseja dar para sua conta:",
       },
     ])
     .then((answer) => {
@@ -91,7 +91,6 @@ function buildAccount() {
       console.log(err);
     });
 }
-
 function checkAccountExist(accountName) {
   if (fs.existsSync(`accounts/${accountName}.json`)) {
     console.log(chalk.bgRed.black("Esta conta já existe, escolha outro nome!"));

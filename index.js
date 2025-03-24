@@ -144,9 +144,7 @@ function deposit() {
             const response = answer["response"];
 
             if (
-              response === "Sim" ||
-              response === "SIM" ||
-              response === "sim"
+              response.toLowerCase() === "sim"
             ) {
               return buildAccount(accountName);
             } else {

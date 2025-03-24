@@ -145,16 +145,7 @@ function deposit() {
               console.log(chalk.bgRed.black("Valor inválido!"));
             }
 
-            const accountData = getAccount(accountName);
-
-            accountData.balance = parseFloat(accountData.balance) + parseFloat(amount)
-
-            fs.writeFileSync(`accounts/${accountName}.json`,
-              JSON.stringify(accountData),
-              function(err) {
-                console.log(err);
-              }
-            )
+            addAmount(accountName, amount);
 
             console.log(chalk.bgGreen.black(`Depósito realizado com sucesso! Valor depositado: R$ ${amount.toFixed(2)}`))
             operation();
@@ -164,6 +155,19 @@ function deposit() {
     .catch((err) => {
       console.log(err);
     });
+}
+
+function addAmount(accountName, amount) {
+  const accountData = getAccount(accountName);
+
+  accountData.balance = parseFloat(accountData.balance) + parseFloat(amount)
+
+  fs.writeFileSync(`accounts/${accountName}.json`,
+    JSON.stringify(accountData),
+    function(err) {
+      console.log(err);
+    }
+  )
 }
 
 function getAccountBalance() {

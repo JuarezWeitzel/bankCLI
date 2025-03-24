@@ -104,8 +104,62 @@ function deposit() {
     .then((answer) => {
       const accountName = answer["accountName"];
 
-      console.log(accountName)
+      if (accountName === "" || !isNaN(Number(accountName))) {
+        console.log(chalk.bgRed.black("Nome da conta inválido!"));
+        return deposit();
+      }
 
+      if (!checkAccountNotExist(accountName)) {
+        inquirer.default
+          .prompt([
+            {
+              name: "response",
+              message: "Deseja criar uma conta?",
+            },
+          ])
+          .then((answer) => {
+            const response = answer["response"];
+
+            if (
+              response === "Sim" ||
+              response === "SIM" ||
+              response === "sim"
+            ) {
+              return buildAccount(accountName);
+            } else {
+              operation();
+            }
+          });
+      } else {
+        inquirer.default
+          .prompt([
+            {
+              name: "amount",
+              message: "Informe o valor do deposito:",
+            },
+          ])
+          .then((answer) => {
+            const amount = parseFloat(answer["amount"]);
+
+            while (amount <= 0 || amount === "") {
+              console.log(chalk.bgRed.black("Valor inválido!"));
+            }
+
+            const accountData = getAccount(accountName);
+
+            accountData.balance = parseFloat(accountData.balance) + parseFloat(amount)
+
+            fs.writeFileSync(`accounts/${accountName}.json`,
+              JSON.stringify(accountData),
+              function(err) {
+                console.log(err);
+              }
+            )
+
+            console.log(chalk.bgGreen.black(`Depósito realizado com sucesso! Valor depositado: R$ ${amount.toFixed(2)}`))
+            operation();
+          });
+      }
     })
     .catch((err) => {
       console.log(err);

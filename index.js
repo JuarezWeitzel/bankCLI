@@ -5,7 +5,6 @@ const chalk = require("chalk");
 // importando modulos internos
 const fs = require("fs");
 const { exit } = require("process");
-const { create } = require("domain");
 
 operation();
 

@@ -104,23 +104,29 @@ function getAccountBalance() {
     .then((answer) => {
       const accountName = answer["accountName"];
 
-      if(!checkAccountNotExist(accountName)) {
+      if (!checkAccountNotExist(accountName)) {
         return getAccountBalance();
       }
 
-      const accountJSON = fs.readFileSync(`accounts/${accountName}.json`, {
-        encoding: "utf8",
-        flag: "r"
-      })
+      const accountBalance = getAccount(accountName);
 
-      const accountData = JSON.parse(accountJSON)
-      const accountBalance = accountData.balance.toFixed(2)
-
-      console.log(chalk.bgBlue(`O saldo da sua conta é: R$${accountBalance}`))
+      console.log(chalk.bgBlue(`O saldo da sua conta é: R$${accountBalance.balance.toFixed(2)}`));
+      operation();
     })
     .catch((err) => {
       console.log(err);
     });
+}
+
+function getAccount(accountName) {
+  const accountJSON = fs.readFileSync(`accounts/${accountName}.json`, {
+    encoding: "utf8",
+    flag: "r",
+  });
+
+  const accountData = JSON.parse(accountJSON);
+
+  return accountData;
 }
 
 function checkAccountNotExist(accountName) {

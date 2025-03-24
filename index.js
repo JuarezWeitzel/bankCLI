@@ -70,10 +70,7 @@ function buildAccount() {
         fs.mkdirSync("accounts");
       }
 
-      if (fs.existsSync(`accounts/${accountName}.json`)) {
-        console.log(
-          chalk.bgRed.black("Esta conta ja existe, escolha outro nome!")
-        );
+      if (!checkAccountExist(accountName)) {
         buildAccount();
       } else {
         fs.writeFileSync(
@@ -93,6 +90,15 @@ function buildAccount() {
     .catch((err) => {
       console.log(err);
     });
+}
+
+function checkAccountExist(accountName) {
+  if (fs.existsSync(`accounts/${accountName}.json`)) {
+    console.log(chalk.bgRed.black("Esta conta já existe, escolha outro nome!"));
+    return false;
+  }
+
+  return true;
 }
 
 function leaveBank() {

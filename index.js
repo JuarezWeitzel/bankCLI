@@ -96,7 +96,7 @@ function buildAccount() {
             const response = answer["response"];
 
             if (response.toLowerCase() === "s") {
-              return withdraw();
+              return deposit();
             } else {
               return operation();
             }
@@ -235,15 +235,21 @@ function withdraw() {
               return askAmount();
             }
 
-            removeAmount(accountName, amount);
+            const accountData = getAccount(accountName, amount)
 
-            console.log(
-              chalk.bgGreen.black(
-                `Saque feito com sucesso! O valor do saque foi de R$ ${amount.toFixed(
-                  2
-                )}.`
-              )
-            );
+            if (accountData.balance < amount) {
+              console.log(chalk.bgRed.black("Saldo insuficiente para saque!"));
+            } else {
+              removeAmount(accountName, amount);
+
+              console.log(
+                chalk.bgGreen.black(
+                  `Saque feito com sucesso! O valor do saque foi de R$ ${amount.toFixed(
+                    2
+                  )}.`
+                )
+              );
+            }
 
             inquirer.default
               .prompt([
